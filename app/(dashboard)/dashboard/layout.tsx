@@ -8,6 +8,8 @@ import FriendRequestSidebarOptions from "@/app/components/FriendRequestSidebarOp
 import { authOptions } from "@/app/lib/auth";
 import { Icon, Icons } from "@/app/components/Icons";
 import { fetchRedis } from "@/app/helpers/redis";
+import { getFriendsByUserId } from "@/app/helpers/get-friends-by-user-id";
+import SidebarChatList from "@/app/components/SidebarChatList";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -35,6 +37,8 @@ const Layout = async ({ children }: LayoutProps) => {
     notFound();
   }
 
+  const friends = await getFriendsByUserId(session.user.id);
+
   const unseenRequestCount = (
     (await fetchRedis(
       "smembers",
@@ -48,12 +52,16 @@ const Layout = async ({ children }: LayoutProps) => {
         <Link href="/dashboard" className="flex items-center h-16 shrink-0">
           <Icons.Logo className="w-auto h-8 text-indigo-600" />
         </Link>
-        <div className="text-xs font-semibold leading-6 text-gray-400">
-          Your chats
-        </div>
+        {friends.length > 0 ? (
+          <div className="text-xs font-semibold leading-6 text-gray-400">
+            Your chats
+          </div>
+        ) : null}
         <nav className="flex flex-col flex-1">
           <ul role="list" className="flex flex-col flex-1 gap-y-7">
-            <li>// chats that this user has</li>
+            <li>
+              <SidebarChatList sessionId={session.user.id} friends={friends} />
+            </li>
             <li>
               <div className="text-xs font-semibold leading-6 text-gray-400">
                 Overview
