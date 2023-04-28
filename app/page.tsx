@@ -1,3 +1,7 @@
+"use client";
+
+import { signOut } from "next-auth/react";
+
 export default function Home() {
-  return <div className="text-red-500">Hello World!</div>;
+  return <button onClick={() => signOut()}>Sign out</button>;
 }
