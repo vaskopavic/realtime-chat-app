@@ -6,20 +6,15 @@ import { notFound } from "next/navigation";
 import SignOutButton from "@/app/components/SignOutButton";
 import FriendRequestSidebarOptions from "@/app/components/FriendRequestSidebarOption";
 import { authOptions } from "@/app/lib/auth";
-import { Icon, Icons } from "@/app/components/Icons";
+import { Icons } from "@/app/components/Icons";
 import { fetchRedis } from "@/app/helpers/redis";
 import { getFriendsByUserId } from "@/app/helpers/get-friends-by-user-id";
 import SidebarChatList from "@/app/components/SidebarChatList";
+import MobileChatLayout from "@/app/components/MobileChatLayout";
+import { SidebarOption } from "@/app/types/typings";
 
 interface LayoutProps {
   children: React.ReactNode;
-}
-
-interface SidebarOption {
-  id: string;
-  name: string;
-  href: string;
-  Icon: Icon;
 }
 
 const sidebarOptions: SidebarOption[] = [
@@ -48,7 +43,15 @@ const Layout = async ({ children }: LayoutProps) => {
 
   return (
     <div className="flex w-full h-screen">
-      <div className="flex flex-col w-full h-full max-w-xs px-6 overflow-y-auto bg-white border-r border-gray-200 grow gap-y-5">
+      <div className="md:hidden">
+        <MobileChatLayout
+          friends={friends}
+          session={session}
+          sidebarOptions={sidebarOptions}
+          unseenRequestCount={unseenRequestCount}
+        />
+      </div>
+      <div className="flex-col hidden w-full h-full max-w-xs px-6 overflow-y-auto bg-white border-r border-gray-200 md:flex grow gap-y-5">
         <Link href="/dashboard" className="flex items-center h-16 shrink-0">
           <Icons.Logo className="w-auto h-8 text-indigo-600" />
         </Link>
