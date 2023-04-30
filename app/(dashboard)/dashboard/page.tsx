@@ -9,7 +9,7 @@ import { getFriendsByUserId } from "@/app/helpers/get-friends-by-user-id";
 import { fetchRedis } from "@/app/helpers/redis";
 import { chatHrefConstructor } from "@/app/lib/utils";
 
-const Dashboard = async ({}) => {
+const Dashboard = async () => {
   const session = await getServerSession(authOptions);
   if (!session) {
     notFound();

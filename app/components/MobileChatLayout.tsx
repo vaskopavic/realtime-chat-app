@@ -84,7 +84,7 @@ const MobileChatLayout: React.FC<MobileChatLayoutProps> = ({
                           </div>
                         </div>
                       </div>
-                      <div className="relative flex-1 px-4 mt-6 sm:px-6">
+                      <div className="relative flex flex-col flex-1 px-4 mt-6 sm:px-6">
                         {friends.length > 0 ? (
                           <div className="text-xs font-semibold leading-6 text-gray-400">
                             Your chats

@@ -4,7 +4,6 @@ import Image from "next/image";
 
 import { authOptions } from "@/app/lib/auth";
 import { fetchRedis } from "@/app/helpers/redis";
-import { db } from "@/app/lib/db";
 import { messageArraySchema } from "@/app/lib/validations/message";
 import Messages from "@/app/components/Messages";
 import ChatInput from "@/app/components/ChatInput";
@@ -53,7 +52,11 @@ const ChatPage = async ({ params }: ChatPageProps) => {
   }
 
   const chatPartnerId = user.id === userId1 ? userId2 : userId1;
-  const chatPartner = (await db.get(`user:${chatPartnerId}`)) as User;
+  const chatPartnerRaw = (await fetchRedis(
+    "get",
+    `user:${chatPartnerId}`
+  )) as string;
+  const chatPartner = JSON.parse(chatPartnerRaw) as User;
   const initialMessages = await getChatMessages(chatId);
 
   return (
